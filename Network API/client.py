@@ -1,9 +1,8 @@
-#Tested Locally
-# Throughout commenting, client, device and dispenser all refer to the same thing, all is commented at different points and I kept on changing during
+# Tested locally for prototyping.
+# Throughout commenting, client, device and dispenser all refer to the same thing.
+# Remember to edit the main function more, not the functions within the class.
 
-# Remember to edit the main function more, not the functions within the class
-
-#client.py
+# client.py
 import socket
 import select
 import sys
@@ -13,60 +12,68 @@ import time
 class Client(object):
 
     def __init__(self, name = "Client", ip_address = "0.0.0.0", port = 8000, server_connection = ""):
-        # Name given to the dispenser for identification by server
+        # Name given to the dispenser for identification by server.
         self.name = name
-        # The IP address the dispenser must connect too. This means Server IP must be static
+        # The server IP address that the dispenser will connect too. Server IP must be static to accomodate.
         self.ip_address = ip_address
-        # The port upon which the server is accessible
+        # The port from  which the server is accessible.
         self.port = port
-        # Server connection using the socket class
+        # The server connection implementing the socket class.
         self.server_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    # Connect client to server upon initiation of client class
+    # Connect client to the server with the initiation of client class.
     def is_client_connected(self):
-        connected = False # Connection starts as false
+        # Connection begins as false.
+        connected = False
 
-        while not connected: # While the connection is false, try connect
+        # While the connection is false, attempt to establish a working connection.
+        while not connected:
+            
             try:
-                self.server_connection.connect((self.ip_address, self.port)) # if successfully connected, set connected to true and return to main loop
+                # If successfully connected, change connected boolean to true and return to main loop.
+                self.server_connection.connect((self.ip_address, self.port))
                 connected = True
                 print("Client Connected\n")
-            except ConnectionRefusedError: # This is an error that occurs when the client tries to connect to server when it is not possible
+            # An error that occurs if  the client attempts to connect to the server and it fails.
+            except ConnectionRefusedError:
                 connected = False
+            # This error occurs if the connection is already successful, this happens after continuous loops through the main loop
+            except OSError:
+                # After the connection is successful, this ensures that the connection remains true if it has already been established between client and server.
+                connected = True
 
-            except OSError: # This error occurs if connection is already successful, this happens after continuous loops through the main loop
-                connected = True # It just sets the connection as true as it means a connection has already been created between client and server
-
-        return connected # return the boolean connected
+        # Return the state on this connection.
+        return connected
 
 
-    # Function to set the devices name
+    # The function that changes a device's name.
     def set_clients_name(self):
         self.name = "HandSanitiserDispener22"
 
-    # A function to return the devices name
+    # The function that returns a device's name.
     def get_clients_name(self):
         return self.name
 
-    # Send the devices name for identification for statistics
+    # The function that encodes the device's name and sends it to the server for identification.
     def send_name_to_server(self):
 
         self.set_clients_name()
         self.server_connection.send(self.get_clients_name().encode())
 
-    # A function to get data from the server, most likely used to get status of device
+    # The function that obtains and decodes data from the server, primarily used to retrieve the status of device.
     def get_data_from_server(self, data_input):
 
         message = data_input.recv(1024)
 
         parsed_message = message.decode()
 
-        print(parsed_message) # if we have data from the server, print it # Used for testing
+        # Print message to demonstrate successful connection.
+        print(parsed_message)
 
         if parsed_message == "Data please\n":
             self.send_data_to_server()
 
-    # Send a response to the get status sent by server, most likely stats and confirmation its still on
+    # The functon that sends an encoded response back to the server, primarily stats and whether the connection is true.
     def send_data_to_server(self):
 
         message = self.data_from_device()
@@ -75,20 +82,20 @@ class Client(object):
         self.test_time(10)
         self.server_connection.send(message_with_sender.encode())
 
-    # Function to get data from sensors, just a dummy string there at the minute used for testing
+    # The function that obtains data from sensors. Currently a dummy function as the physical components don't exist.
     def data_from_device(self):
         return "Data"
 
-    # End connection to server in a controlled fashion such as a keyboard interrupt, used for testing
+    # The function that ends a connection to the server in a controlled fashion y a keyboard interrupt. Useful for testing.
     def end_connection_to_server(self):
 
         message = "End Communication with Server"
         self.server_connection.send(message.encode())
         self.server_connection.close()
-        print("Successfully Disconnected from Server")
+        print("\nSuccessfully Disconnected from Server")
         sys.exit(0)
 
-    # interval timer used for testing, must need a robust timer that both client and server can use to ensure everything is working correctly
+    # The function for describing the nterval timer that is used for testing. It requires a robust timer that both client and server can use to ensure everything is working correctly.
     def test_time(self, interval):
 
         while interval > 0:
@@ -97,38 +104,42 @@ class Client(object):
 
 
 
-# Main function
+# Main function.
 def main():
     try:
-        client = Client() # Creating a client object
+        # Create a client object.
+        client = Client()
 
-        # Infinite loop running forever
+        # Infite loop to handle connection.
         while client.is_client_connected():
 
-            client.send_name_to_server() # Connecting client  to server
+            # Connects client to the server.
+            client.send_name_to_server()
 
             try:
 
-                inputs = [client.server_connection] # Only inputs should be from server
-                read, write, error = select.select(inputs, [], []) #
+                # Determines any inputs from the server.
+                inputs = [client.server_connection]
+                read, write, error = select.select(inputs, [], [])
 
                 for data_input in read:
 
-                    if data_input == client.server_connection: # are we getting data from the server
+                    # Determine if data is being received from the server.
+                    if data_input == client.server_connection:
 
                         client.get_data_from_server(data_input)
 
                     else:
 
-                        # we are getting data from the keyboard
-                        # print out what the user types back to them
+                        # Determine if data is being received from the keyboard and print out what the user types back to them.
                         client.send_data_to_server()
 
             except KeyboardInterrupt:
-                # end communication to server
+                # End communication to server.
                 client.end_connection_to_server()
 
     except BrokenPipeError:
+        # Call main function and try again.
         main()
 
 if __name__ == '__main__':
