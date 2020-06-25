@@ -3,12 +3,13 @@
 # Need to remove device from dict when disconnected
 # Need to add functionality to enable random client diconnection
 
-#server.py
+# server.py
 import socket
 import threading
 import sys
 import time
 import re
+import os
 
 
 class Server(object):
@@ -32,7 +33,7 @@ class Server(object):
 
     # The function for establishing the server.
     def start_server(self):
-        print("Server Started")
+        print("\nServer started")
 
         # 32-bit IPv4, TCP/ICP.
         self.serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -203,8 +204,9 @@ def main():
         server.serversocket.close()
         server.server_running = False
 
-        print("Goodbye")
-        sys.exit(0)
+        print("\nGoodbye")
+        os.system('python3 menu.py')
+        #sys.exit(0)
 
 
 if __name__ == '__main__':
