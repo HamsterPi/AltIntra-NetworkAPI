@@ -86,7 +86,7 @@ class Client(object):
     def data_from_device(self):
         return "Data"
 
-    # The function that ends a connection to the server in a controlled fashion y a keyboard interrupt. Useful for testing.
+    # The function that ends a connection to the server in a controlled fashion with a keyboard interrupt (CTRL+C). Useful for testing.
     def end_connection_to_server(self):
 
         message = "End Communication with Server"
@@ -95,7 +95,7 @@ class Client(object):
         print("\nSuccessfully Disconnected from Server")
         sys.exit(0)
 
-    # The function for describing the nterval timer that is used for testing. It requires a robust timer that both client and server can use to ensure everything is working correctly.
+    # The function for describing the interval timer that is used for testing. It requires a robust timer that both client and server can use to ensure everything is working correctly.
     def test_time(self, interval):
 
         while interval > 0:
