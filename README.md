@@ -16,5 +16,5 @@ Step 7: Use a keyboard interrupt disconnect with the client.
 Step 8: Use a keyboard interrupt to close the server and return to the menu.  
 Step 8: Enter "B" or "b" to close the program.  
 
-Link to video demonstration: [https://drive.google.com/file/d/16KN2iP5Shz5IAF6UKMw_LP02XdW-Ojzd/view?usp=sharing] (https://drive.google.com/file/d/16KN2iP5Shz5IAF6UKMw_LP02XdW-Ojzd/view?usp=sharing)  
+Link to video demonstration: https://drive.google.com/file/d/16KN2iP5Shz5IAF6UKMw_LP02XdW-Ojzd/view?usp=sharing  
 Thank you for using our network API.
