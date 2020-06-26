@@ -8,7 +8,6 @@ import select
 import sys
 import time
 
-
 class Client(object):
 
     def __init__(self, name = "Client", ip_address = "0.0.0.0", port = 8000, server_connection = ""):
@@ -101,8 +100,6 @@ class Client(object):
         while interval > 0:
             time.sleep(1)
             interval -= 1
-
-
 
 # Main function.
 def main():
