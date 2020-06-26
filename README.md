@@ -1,6 +1,6 @@
 # Alt INTRA Project - Group 7
 
-## These are the scripts accociated with running Group 7's network API. It involves a menu program that presents a basic, but comprehensible GUI that allows the user to establish a  
+## These are the scripts accociated with running Group 7's network API. It involves a menu program that presents a basic, but comprehensible GUI that allows the user to establish a
 ## a connection between the server and a device. The user must fist sign in and below is a guide for how to do so and use the program. There will also be a video demo of it in use.
 
 Username: soapy_joe
