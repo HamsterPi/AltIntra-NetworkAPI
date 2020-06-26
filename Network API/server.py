@@ -1,7 +1,4 @@
 # Tested locally for prototyping.
-# Need to add notifier when client is missing using counter, dict and list
-# Need to remove device from dict when disconnected
-# Need to add functionality to enable random client diconnection
 
 # server.py
 import socket
@@ -10,7 +7,6 @@ import sys
 import time
 import re
 import os
-
 
 class Server(object):
 
@@ -195,7 +191,7 @@ def main():
 
     except KeyboardInterrupt:
 
-        print("\nServer shutting down")
+        print("\n\nServer shutting down\n")
 
         for connections in server.connected_devices:
             # Close all client connections.
@@ -204,10 +200,7 @@ def main():
         server.serversocket.close()
         server.server_running = False
 
-        print("\nGoodbye")
         os.system('python3 menu.py')
-        #sys.exit(0)
-
 
 if __name__ == '__main__':
     main()
