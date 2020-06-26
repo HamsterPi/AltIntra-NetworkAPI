@@ -20,6 +20,9 @@ def login():
     if inp1 == username and inp2 == password:
         print("\nWelcome - Access Granted")
         menu()
+    else:
+        print("\nIncorrect login details.\nPlease try again.\n")
+        login()
 
 def menu():
     print("************MAIN MENU**************")
